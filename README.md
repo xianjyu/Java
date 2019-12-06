@@ -61,7 +61,7 @@
         git push -u origin master
         ```
     - 提交成功后，到 github 上刷新，看一下效果
-    - 如果使用 http 的 git 地址，如果嫌每次输入用户名密码麻烦的化，使用如果命令可以记住密码
+    - 如果使用 http 的 git 地址，如果嫌每次输入用户名密码麻烦的化，使用下面的命令可以记住密码
         ```
         git config --global credential.helper store
         ```
@@ -72,7 +72,7 @@
         git commit -m "本修改说明"
         git push
         ```
-        `git add .` 是添加所以的变更，如果单独添加某个文件可以使用 `git add 单个文件路径名称`
+        `git add .` 是添加所有的变更，如果单独添加某个文件可以使用 `git add 单个文件路径名称`
     - 到 github 项目页面上刷新一下，看一下效果
 
 ### 程序控制执行流程
