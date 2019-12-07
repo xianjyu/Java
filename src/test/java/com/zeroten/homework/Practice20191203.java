@@ -2,7 +2,7 @@ package com.zeroten.homework;
 
 import org.testng.annotations.Test;
 
-public class practice20191203 {
+public class Practice20191203 {
 
     @Test
     public void testInteger(){

@@ -2,7 +2,7 @@ package com.zeroten.homework;
 
 import org.testng.annotations.Test;
 
-public class practice20191205 {
+public class Practice20191205 {
 
     @Test
     public void testVampireNum(){
