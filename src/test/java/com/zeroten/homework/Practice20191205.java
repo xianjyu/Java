@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 public class Practice20191205 {
 
     @Test
-    public void testVampireNum(){
+    public void testGetVampireNum(){
         /**
          *  题目：写一个程序，找出四位数中所有的吸血鬼数字
          *  什么是吸血鬼数字
@@ -32,12 +32,16 @@ public class Practice20191205 {
     }
 
     @Test
-    public void testPalindromicNum(){
+    public void testIsPalindromicNum(){
         /**
          *  题目：判断一个整数是否是回文数
          *  回文数
          *      回文数是指正序(从左到右)和倒序(从右到左)读都是一样的整数
          *  例如：101
          */
+
+        int num = 121;
+
+
     }
 }
