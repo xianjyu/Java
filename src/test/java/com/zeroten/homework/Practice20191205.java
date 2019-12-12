@@ -1,5 +1,7 @@
 package com.zeroten.homework;
 
+import com.javales.flow.Homework;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class Practice20191205 {
@@ -39,9 +41,20 @@ public class Practice20191205 {
          *      回文数是指正序(从左到右)和倒序(从右到左)读都是一样的整数
          *  例如：101
          */
-
-        int num = 121;
-
-
+        Assert.assertEquals(Homework.isPalindromicNum(121), true);
     }
+
+    @Test
+    public void testIsPalindromicNum2(){
+        /**
+         *  题目：判断一个整数是否是回文数
+         *  回文数
+         *      回文数是指正序(从左到右)和倒序(从右到左)读都是一样的整数
+         *  例如：101
+         */
+        Assert.assertEquals(Homework.isPalindromicNum(12), false);
+    }
+
+
+
 }
