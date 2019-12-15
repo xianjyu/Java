@@ -94,6 +94,210 @@ public class StringTest {
 
         // 查找
         String str10 = "Hello World, today is 2019-12-11. say hi to me!";
-        System.out.println(str10.indexOf("o"));
+        System.out.println(str10.indexOf("e"));     // 字符串索引从0开始计算
+        System.out.println(str10.indexOf("H", 2));  // 从索引2开始没有找到H，返回-1
+        System.out.println(str10.lastIndexOf("!"));
+        // 查找str10字符串中所有的字母o出现的位置
+
+        // 替换
+        String str11 = "xian jia yu";
+        System.out.println(str11.replace("jia", "j"));
+        System.out.println(str11.replaceAll(" ", "")); // regx:正则
+
     }
+    @Test
+    public void testFindForward(){
+        String str12 = "Hello World, today is 2019-12-11. say hi to me!";
+        int index = -1;
+        int total = 0;
+        do {
+            int at = str12.indexOf("o", index+1);
+            if (at == -1) break;
+            System.out.println(String.format("第%d位是小写字母：o", at+1));
+            index = at;
+            total++;
+        }while(true);
+        System.out.println("该字符串中一共有" + total + "个小写字母o");
+
+    }
+
+    @Test
+    public void testFindBack(){
+        String str13 = "Hello World, today is 2019-12-11. say hi to me!";
+        int index = str13.length();
+        int total = 0;
+        do {
+            int at = str13.lastIndexOf("o", index-1);
+            if (at == -1) break;
+            System.out.println(String.format("第%d位是小写字母：o", at+1));
+            index = at;
+            total++;
+        }while (true);
+        System.out.println("该字符串中一共有" + total + "个小写字母o");
+    }
+
+    @Test
+    public void testReplace(){
+        String str14 = "xian jia yu";
+        System.out.println(str14.replace("jia", "j"));
+        System.out.println(str14.replaceAll(" ", "")); // regx:正则
+    }
+
+    @Test
+    public void testUpperOrLower(){
+        //大小写转换
+        String str15 = "xian jia Yu";
+        System.out.println(str15 + "大写转换后：" + str15.toUpperCase());
+        System.out.println(str15 + "小写转换后：" + str15.toLowerCase());
+    }
+
+    @Test
+    public void testTrim(){
+        // 两边去空格
+        String str16 = "   he l l o  ";
+        System.out.println(str16.trim());
+    }
+
+    @Test
+    public void testEmpty(){
+        // 空串
+        String str17 = ""; // 代表空的字符串
+        System.out.println(str17);
+        String str18 = null; // 代表存放的是空置，没有对齐进行初始化
+        System.out.println(str18);
+    }
+
+    @Test
+    public void testBuffer(){
+        // StringBuffer
+        StringBuffer sb = new StringBuffer(); // 默认容量大小：super(16); 继承AbstractStringBuilder
+        StringBuffer sb2 = new StringBuffer(100); // 指定容量大小：100；
+    }
+
+    @Test
+    public void testAppendOrLength(){
+        // 拼接：+    如果JVM没有优化时，会产生多个中间(临时)变量，坑能会导致内存溢出
+        String str1 = "Hello";
+        str1 += ',';    // 单引号中只能写入字符，并且是单个字符
+        str1 += "World";
+        str1 += '!';
+        System.out.println(String.format("拼接后的结果为：%s", str1));
+
+        // 追加：append
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hello");
+        sb.append(',');
+        sb.append("World");
+        sb.append('!');
+        // 在未执行toString方法前，JVM都是把这些字符串放在数组中，不会产生临时变量
+        System.out.println(String.format("拼接后的结果为：%s", sb.toString()));
+        // 打印sb的长度
+        System.out.println(String.format("拼接后字符串的长度为为：%s", sb.length()));
+        // 设置sb的长度为10
+        sb.setLength(10);
+        System.out.println(sb.toString()); // Hello,Worl
+        // 设置sb的长度为20
+        sb.setLength(20);
+        System.out.println(sb.toString()); //Hello,Worl          10个空格
+    }
+
+    @Test
+    public void testStringOptimize(){
+        // JVM对字符串的优化，下面这种拼接的方，JVM会对其优化，6优化后结果为testStringOptimize2()方法中的结果
+        // 第一种优化  +
+        String str1 = "Hello" + ",World!";
+        System.out.println(str1);
+
+        // 第二种优化  变量+
+        String str2 = str1 + "Sya Hi.";
+        System.out.println(str2);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(str1);
+        sb.append("Say Hi.");
+        System.out.println(sb.toString());
+
+        // 第三种优化  循环
+
+
+    }
+    /*
+    对testStringOptimize()和testStringOptimize2()方法进行反编译
+    反编译命令：javap -c ./target/test-classes/com/zeroten/string/StringTest.class
+    public void testStringOptimize();
+    Code:
+       0: ldc           #103                // String Hello,World!
+       2: astore_1
+       3: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
+       6: aload_1
+       7: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+      10: return
+
+    public void testStringOptimize2();
+    Code:
+       0: ldc           #103                // String Hello,World!
+       2: astore_1
+       3: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
+       6: aload_1
+       7: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+      10: return
+
+     */
+
+
+    @Test
+    public void testStringOptimize2(){
+        // JVM对字符串的优化
+        String str2 = "Hello,World!";
+        System.out.println(str2);
+    }
+
+    @Test
+    public void testStringOptimize3(){
+        // 第三种优化  循环
+        // 查看拼接1-50000需要多长时间，优化前
+        /*
+          一般写法
+         */
+        long start = System.currentTimeMillis();   // 查看当前时间毫秒数
+        String str = "";
+        for (int n = 0; n < 20000; n++){
+            str += n;
+        }
+        System.out.println(str.length());
+        System.out.println(String.format("优化前耗时:%d ms", System.currentTimeMillis() - start));
+
+
+        /*
+            JVM虚拟机优化后的
+         */
+        start = System.currentTimeMillis();   // 查看当前时间毫秒数
+        str = "";
+        for (int n = 0; n < 20000; n++){
+            /*
+              虽然节省了部分时间和中间变量，但是该StringBuilder实在for循环内部，每循环一次都会创建一次对象
+             */
+            StringBuilder sb = new StringBuilder();
+            sb.append(str);
+            sb.append(n);
+            str = sb.toString();
+        }
+        System.out.println(str.length());
+        System.out.println(String.format("优化后耗时:%d ms", System.currentTimeMillis() - start));
+
+        /*
+            自己写：将StingBuilder放在循环外
+         */
+        start = System.currentTimeMillis();   // 查看当前时间毫秒数
+        str = "";
+        StringBuilder sb2 = new StringBuilder();
+        for (int n = 0; n < 20000; n++){
+            sb2.append(n);
+        }
+        str = sb2.toString();
+        System.out.println(str.length());
+        System.out.println(String.format("自己写耗时:%d ms", System.currentTimeMillis() - start));
+
+    }
+
 }
