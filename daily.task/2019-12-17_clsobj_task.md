@@ -435,14 +435,150 @@ Java语言中提供了一些修饰符，用来定义类、成员变量和方法�
 
 类的所有实例对象共享一个变量，在静态方法中可以访问静态域变量，但是不能访问非静态的域变量。
 
+```java
+package com.zeroten.clsobj;
 
+import org.testng.annotations.Test;
+
+public class Static {
+    private static int count = 0;   // 静态域
+
+    public Static(){
+        count++;
+    }
+
+    public static void  printCount(){   // 静态方法
+        System.out.println("总共有" + count + "个实例！");
+    }
+
+    @Test
+    public void testStatic(){
+        new Static();
+        Static s = new Static();
+        new Static();
+
+        s.printCount();         // 不推荐使用该种实例的对象访问静态方法
+        Static.printCount();    // 类名访问静态方法
+
+    }
+}
+
+```
 ##### 1.4.3.2.final修饰符
 
+使⽤ `final` 定义的成员变量，在构建对象时必须进⾏初始化，并且在后⾯的操作中，不能够再对它进⾏修改。
+
+`ﬁnal` 修饰符通常⽤于基本类型域，或不可变类的域（如果类中的每个⽅法都不会改变其对象，这种类就是不可 变的类）。
+
+使⽤ `ﬁnal` 定义的成员变量，我们也称为常量，常量通常全部⼤写，字⺟和字⺟之间使⽤下划线连接。
+
+```java
+package com.zeroten.clsobj;
+
+import org.testng.annotations.Test;
+
+public class Static {
+    private static final int MAX_COUNT = 6;     // MAX_COUNT表示Static类最多可创建实例的数量
+    private static int count = 0;   // 静态域
+
+    public Static() throws Exception {
+        count++;
+        if (count > MAX_COUNT){
+            throw new Exception("Static类只能创建" + MAX_COUNT + "个对象！");
+        }
+    }
+
+    public static void  printCount(){   // 静态方法
+        System.out.println("总共有" + count + "个实例！");
+    }
+
+    @Test
+    public void testStatic() throws Exception {
+        new Static();
+        Static s = new Static();
+        new Static();
+        new Static();
+        new Static();
+
+        s.printCount();         // 不推荐使用该种实例的对象访问静态方法
+        Static.printCount();    // 类名访问静态方法
+
+    }
+}
+
+```
+
 #### 1.4.4.代码块
+定义⼀个类时，在类⾥⾯允许使⽤⼤括号括起来⼀段代码来对对象进⾏初始化，这个代码块也可以称为初始化 块（initialization block）。⼀个类中可以包含多个代码块，当构造类的实例时，这些代码块按照从上到下的顺序 进⾏执⾏。
+
+使⽤ `static` 修饰的代码块，代码块内只能访问静态域，不能访问⾮静态域，我们也称之为静态初始化块。静态初始化块当类被第⼀次调⽤时执⾏⼀次。
+
+静态代码块只会执行一次。
+
+```java
+
+public class CodeBlock {     
+	public static final int MAX_INDEX;     
+	public final int fromIndex; 
+    
+    static {   
+        // 静态代码块，也可称为静态初始化代码块      
+		System.out.println("执⾏ static 代码块");        
+		MAX_INDEX = 1000;     } 
+ 
+    {   
+        // 代码块，也可以叫作初始化代码块        
+		System.out.println("执⾏初始化代码块");         
+		this.fromIndex = 1;     
+	} 
+ 
+    public static void main(String[] args) {         
+		System.out.println(CodeBlock.MAX_INDEX); 
+ 
+        CodeBlock codeBlock = new CodeBlock();         
+		System.out.println(codeBlock.fromIndex); 
+ 
+        CodeBlock codeBlock2 = new CodeBlock();         
+		System.out.println(codeBlock2.fromIndex);     
+	} 
+} 
+```
 
 #### 1.4.5.包
 
+Java中使⽤包（package）来将类组织起来，包+类名必须具有唯⼀性。当⼀个类中需要访问其他包名下的类 时，需要使⽤包+类名的⽅式，否则编译器不知道去哪⾥加载这个类。
+
+例如：`java.util.Date date = new java.util.Date(); `
+
+这种写法显然很繁琐，为了简化写法，我们可以使⽤ import 关键字在类定义之前导⼊要使⽤的类，这样在类 中需要使⽤的时候直接使⽤类名即可，⽽不⽤每次都加上包前缀。例如：
+```
+import java.util.Date; 
+Date date = new Date(); 
+```
+
+我们要导⼊同⼀个包下的多个类时，我们可以使⽤星号。例如：`import java.util.*` 表示导⼊ java.util 包 下的所有类。
+
+注意：星号每次只能导⼊⼀个包下的所有类，⽽不能导⼊它的⼦包下的其它类。
+
+对于静态域和静态⽅法，我们在导⼊的时候可以再加上 static 修饰符，表示静态导⼊，这样就可以直接使⽤域 变量或者⽅法名，⽽不⽤加类名前缀。
+
+例如：
+```
+import static java.lang.System.out; 
+out.println("hello, world."); 
+```
+
+>类路径
+
+Java 中，类是存储在⽂件系统的⼦⽬录中，⽽类存储在⽂件系统中的⽬录我们称为类路径，类的路径 必须和包名匹配。
+
+*注意*： javac 编译器总是在当前的⽬录中查找⽂件，但 JVM 仅在类路径（CLASSPATH）中有 “.” ⽬录时才查看 当前⽬录。默认的类路径包含 “.” ⽬录，但如果⾃⼰设置了类路径⽽忘记加⼊ “.” ⽬录时，程序可以通过编译， 但不能运⾏。
+    
 ### 1.5.创建对象
+
+我们通常使⽤ new 操作符来创建⼀个对象，在创建对象的同时，对域变量进⾏初始化，有如下 4 种初始化⽅式：
+
+在声明域变量的同时对变量进⾏赋值 在初始化代码块中对域变量进⾏赋值 在构造器⽅法中对域变量进⾏赋值 对于未进⾏赋值的域变量，系统会⾃动初始化为默认值（基本类型为⼆进制的 0，引⽤类型为 null）
 
 ## 2.应用练习
 
